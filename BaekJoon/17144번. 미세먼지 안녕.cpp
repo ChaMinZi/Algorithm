@@ -1,0 +1,215 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <string.h>
+#include <sstream>
+#include <algorithm>
+#include <map>
+#include <set>
+#include <queue>
+#define MAX_SZ 52
+
+using namespace std;
+
+int R, C, T;
+int board[MAX_SZ][MAX_SZ];
+
+pair<int, int> cleaner = { -1, -1 };
+queue<pair<int, int>> dustLoc;
+int dr[] = { -1,0,1,0 };
+int dc[] = { 0,1,0,-1 };
+
+bool isPossi(int r, int c) {
+	return (r >= 0 && r < R&& c >= 0 && c < C);
+}
+
+void spreadDust() {
+	int tempBoard[MAX_SZ][MAX_SZ] = { 0, };
+
+	pair<int, int> cur;
+	int nr, nc, count, dust;
+
+	while (!dustLoc.empty()) {
+		cur = dustLoc.front();
+		dustLoc.pop();
+
+		count = 0; 
+		dust = board[cur.first][cur.second];
+		for (int i = 0; i < 4; i++) {
+			nr = cur.first + dr[i];
+			nc = cur.second + dc[i];
+		
+			if (!isPossi(nr, nc)) continue;
+			if (nc == 0 && (nr == cleaner.first || nr == cleaner.second)) continue;
+
+			count++;
+			tempBoard[nr][nc] += (dust / 5);
+		}
+		
+		tempBoard[cur.first][cur.second] += (dust - ((dust / 5) * count));
+	}
+
+	for (int r = 0; r < R; r++)
+	{
+		for (int c = 0; c < C; c++) {
+			board[r][c] = tempBoard[r][c];
+		}
+	}
+	board[cleaner.first][0] = -1;
+	board[cleaner.second][0] = -1;
+}
+
+void cleanDust() {
+	pair<int, int> cur = { cleaner.first, 0 };
+	int temp = 0, ttemp = 0;
+
+	// 오른쪽
+	for (int c = C-1; c > 1; c--) {
+		if (c == C - 1)
+			temp = board[cur.first][c];
+		board[cur.first][c] = board[cur.first][c - 1];
+	}
+	board[cur.first][1] = 0;
+
+	// 위쪽
+	for (int r = 0; r < cur.first; r++) {
+		if (r == cur.first - 1) {
+			board[r][C - 1] = temp;
+			continue;
+		}
+
+		if (r == 0) {
+			ttemp = board[r][C - 1];
+		}
+		board[r][C - 1] = board[r + 1][C - 1];
+	}
+
+	// 왼쪽
+	temp = ttemp;
+	for (int c = 0; c < C-1; c++) {
+		if (c == C - 2) {
+			board[0][c] = temp;
+			continue;
+		}
+		if (c == 0)
+			ttemp = board[0][c];
+
+		board[0][c] = board[0][c + 1];
+	}
+
+	// 아래쪽
+	temp = ttemp;
+	for (int r = cur.first-1; r > 0; r--)
+	{
+		if (r == 1) {
+			board[r][0] = temp;
+			continue;
+		}
+		board[r][0] = board[r - 1][0];
+	}
+
+	cur.first = cleaner.second;
+	// 오른쪽
+	for (int c = C-1; c > 1; c--)
+	{
+		if (c == C - 1)
+			temp = board[cur.first][c];
+		board[cur.first][c] = board[cur.first][c - 1];
+	}
+	board[cur.first][1] = 0;
+
+	// 아래
+	for (int r = R-1; r > cur.first; r--)
+	{
+		if (r == cur.first + 1) {
+			board[r][C - 1] = temp;
+			continue;
+		}
+		else if (r == R - 1)
+			ttemp = board[r][C - 1];
+		board[r][C - 1] = board[r - 1][C - 1];
+	}
+
+	// 왼
+	temp = ttemp;
+	for (int c = 0; c < C-1; c++) {
+		if (c == C - 2)
+		{
+			board[R - 1][c] = temp;
+			continue;
+		}
+		else if (c == 0)
+			ttemp = board[R - 1][c];
+		board[R - 1][c] = board[R - 1][c + 1];
+	}
+
+	// 위
+	temp = ttemp;
+	for (int r = cur.first+1; r < R-1; r++) {
+		if (r == R - 2) {
+			board[r][0] = temp;
+			continue;
+		}
+		board[r][0] = board[r + 1][0];
+	}
+
+	for (int r = 0; r < R; r++)
+	{
+		for (int c = 0; c < C; c++) {
+			dustLoc.push(make_pair(r, c));
+		}
+	}
+}
+
+void init() {
+	while (!dustLoc.empty())
+		dustLoc.pop();
+
+	cin >> R >> C >> T;
+
+	for (int r = 0; r < R; r++) {
+		for (int c = 0; c < C; c++) {
+			cin >> board[r][c];
+			if (board[r][c] == -1 && cleaner.first == -1) {
+				cleaner.first = r;
+				cleaner.second = r + 1;
+			}
+			if (board[r][c] > 0)
+				dustLoc.push(make_pair(r, c));
+		}
+	}
+}
+
+void print() {
+	for (int r = 0; r < R; r++) {
+		for (int c = 0; c < C; c++) {
+			cout << board[r][c] << " ";
+		}
+		cout << "\n";
+	}
+
+	cout << "--------------\n";
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+
+	init();
+
+	while (T--) {
+		spreadDust();
+		cleanDust();
+	}
+
+	int totalDust = 0;
+	for (int r = 0; r < R; r++) {
+		for (int c = 0; c < C; c++) {
+			totalDust += board[r][c];
+		}
+	}
+
+	totalDust += 2;
+	cout << totalDust;
+
+	return 0;
+}
