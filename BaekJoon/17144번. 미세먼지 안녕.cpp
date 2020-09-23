@@ -11,6 +11,14 @@
 
 using namespace std;
 
+/*
+	* created by CHACHA
+	
+	[ 어려웠던 점 ]
+	* 상어를 1칸 씩 이동하면 시간초과가 발생한다. 
+	* 방향을 제대로 안 읽어서 문제를 풀 때 오류가 났다.
+*/
+
 int R, C, T;
 int board[MAX_SZ][MAX_SZ];
 
