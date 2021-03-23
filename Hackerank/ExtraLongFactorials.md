@@ -9,7 +9,7 @@
 ...
 fun extraLongFactorials(n: Int): Unit {
     var a = BigInteger("1")
-    var b= BigInteger("1")
+    var b = BigInteger("1")
     
     for (i in 2..n) {
         a = b.multiply(i.toString().toBigInteger())    
