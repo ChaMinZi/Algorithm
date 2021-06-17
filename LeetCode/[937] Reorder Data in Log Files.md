@@ -12,7 +12,7 @@ Output: ["g1 act car","a8 act zoo","ab1 off key dog","a1 9 2 3 1","zo4 4 7"]
 ```
 ---------------------------
 
-* c++
+* ### c++
 
 ```c++
 bool comp(string& a, string& b) {
@@ -27,6 +27,8 @@ public:
     vector<string> reorderLogFiles(vector<string> logs) {
         vector<string> letters;
         vector<string> digits;
+	
+	// 1. 타입 확인
         for (string& str : logs) {
             int i = 0;
             while (i < str.size() && str[i++] != ' ');
@@ -35,22 +37,22 @@ public:
             else
                 digits.push_back(str);
         }
-
+	
+	// 2. 먼저 문자열 내용을 기준으로 정렬 -> 문자열이 동일하면 식별자 기준으로 정렬
         sort(letters.begin(), letters.end(), comp);
-
+	
+	// 3. 합치기 ( letters.end() 뒤에 digits를 합쳐준다. )
         letters.insert(letters.end(), digits.begin(), digits.end());
         return letters;
     }
 };
 
 int main() {
-	ios_base::sync_with_stdio(false);
-
     vector<string> ret = Solution().reorderLogFiles(
         { "a1 9 2 3 1","g1 act car","zo4 4 7","ab1 off key dog","a8 act zoo" }
     );
 
-	return 0;
+    return 0;
 }
 ```
 
@@ -88,4 +90,25 @@ public:
         return letters;
     }
 };
+```
+
+---------
+
+* Python
+
+```python
+from typing import List
+
+class Solution:
+    def reorderLogFiles(self, logs: List[str]) -> List[str]:
+        letters, digits = [], []
+        for log in logs:
+            if log.split()[1].isdigit():
+                digits.append(log)
+            else:
+                letters.append(log)
+
+        # 두 개의 키를 람다 표현식으로 정렬
+        letters.sort(key=lambda x: (x.split()[1:], x.split()[0]))
+        return letters + digits
 ```
