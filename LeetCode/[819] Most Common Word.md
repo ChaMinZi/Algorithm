@@ -1,7 +1,7 @@
 # [819. Most Common Word](https://leetcode.com/problems/most-common-word/)
 
 * ## 문제 설명
-`paragraph string`은 ' '이나 "!?',;."와 함께 구성되어 있습니다. 여기서 단어만 골라내어 banned word 리스트에 없는 단어 중 가장 빈번하게 등장하는 단어를 출력하는 문제입니다.
+`paragraph string`은 `' '`이나 `"!?',;."`와 함께 구성되어 있습니다. 여기서 단어만 골라내어 banned word 리스트에 없는 단어 중 가장 빈번하게 등장하는 단어를 출력하는 문제입니다.
 
 * ## Example
 
