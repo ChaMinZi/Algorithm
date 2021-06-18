@@ -50,10 +50,39 @@ vector<string> splite(string in) {
 
 </br>
 
+* ## string ↔ char
+
+* `string`을 `char*` 로 바꾸기
+```c++
+char* cStr = (char*)cppStr.c_str(); // c_str()은 const char* 로 반환합니다.
+```
+
+* `string`을 `ch[]`로 바꾸기
+```c++
+char ch[10];
+strcpy(ch, str.c_str());
+or
+strcpy_s(ch, str.c_str());
+```
+
+</br>
+
 * ## reverse
 
 `#include <algorithm>` 헤더를 추가해줘야 합니다.
 
 ```c++
 reverse(str.begin(), str.end());
+```
+
+</br>
+
+* ## string을 대/소문자로 변환
+
+`#include <algorithm>` 헤더를 추가해줘야 합니다.
+
+```c++
+string s = "abDGSsdFDSafds";
+transform(s.begin(), s.end(), s.begin(), ::tolower);	// 소문자 변환
+transform(s.begin(), s.end(), s.begin(), ::toupper);	// 대문자 변환
 ```
