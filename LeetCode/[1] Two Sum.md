@@ -1,4 +1,4 @@
-# 1. Two Sum
+# [1. Two Sum](https://leetcode.com/problems/two-sum/)
 
 배열에서 덧셈하여 타겟을 만들 수 있는 두 수의 인덱스를 리턴하는 문제
 
