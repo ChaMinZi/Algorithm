@@ -101,3 +101,45 @@ private:
     int sidx, eidx;
 };
 ```
+
+* ## C++ 더 나은 코드
+
+![KakaoTalk_20210706_114406935](https://user-images.githubusercontent.com/29828988/124539908-5554ab80-de59-11eb-8ce6-16a472bec2ee.jpg)
+
+```c++
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        if (height.size() == 0)
+            return 0;
+
+        volume = 0;
+        left = 0;
+        right = height.size() - 1;
+        left_max = height[left];
+        right_max = height[right];
+
+        while (left < right) {
+            left_max = max(height[left], left_max);
+            right_max = max(height[right], right_max);
+
+            // 더 높을 쪽을 향해 투 포인터 이동
+            if (left_max <= right_max) {
+                volume += (left_max - height[left]);
+                ++left;
+            }
+            else {
+                volume += (right_max - height[right]);
+                --right;
+            }
+        }
+
+        return volume;
+    }
+
+private:
+    int volume;
+    int left, right;
+    int left_max, right_max;
+};
+```
