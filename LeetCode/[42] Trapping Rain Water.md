@@ -102,7 +102,7 @@ private:
 };
 ```
 
-* ## C++ 더 나은 코드
+* ## C++ 더 나은 코드 O(n)
 
 ![KakaoTalk_20210706_114406935](https://user-images.githubusercontent.com/29828988/124539908-5554ab80-de59-11eb-8ce6-16a472bec2ee.jpg)
 
